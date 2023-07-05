@@ -1,7 +1,7 @@
 export interface ComicPriceProps {
-    comicId?: string;
-    type?: string;
-    price?: number;
+    comicId: string;
+    type: string;
+    price: number;
 }
 
 export class ComicPrice {
@@ -11,23 +11,27 @@ export class ComicPrice {
         this.props = props;
     }
 
-    public get comicId(): string | undefined {
+    public get comicId(): string {
         return this.props.comicId;
     }
 
-    public get type(): string | undefined {
+    public set comicId(value: string) {
+        this.props.comicId = value;
+    }
+
+    public get type(): string {
         return this.props.type;
     }
 
-    public set type(value: string | undefined) {
+    public set type(value: string) {
         this.props.type = value;
     }
 
-    public get price(): number | undefined {
+    public get price(): number {
         return this.props.price;
     }
 
-    public set price(value: number | undefined) {
+    public set price(value: number) {
         this.props.price = value;
     }
 }

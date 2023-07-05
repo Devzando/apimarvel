@@ -1,8 +1,8 @@
 interface TextObjectProps {
-    comicId?: string;
-    type?: string;
-    language?: string;
-    text?: string;
+    comicId: string;
+    type: string;
+    language: string;
+    text: string;
 }
 
 export class TextObject {
@@ -12,31 +12,35 @@ export class TextObject {
         this.props = props;
     }
 
-    public get comicId(): string | undefined {
+    public get comicId(): string {
         return this.props.comicId;
     }
 
-    public get type(): string | undefined {
+    public set comicId(value: string) {
+        this.props.comicId = value;
+    }
+
+    public get type(): string {
         return this.props.type;
     }
 
-    public set type(value: string | undefined) {
+    public set type(value: string) {
         this.props.type = value;
     }
 
-    public get language(): string | undefined {
+    public get language(): string {
         return this.props.language;
     }
 
-    public set language(value: string | undefined) {
+    public set language(value: string) {
         this.props.language = value;
     }
 
-    public get text(): string | undefined {
+    public get text(): string {
         return this.props.text;
     }
 
-    public set text(value: string | undefined) {
+    public set text(value: string) {
         this.props.text = value;
     }
 }

@@ -1,3 +1,4 @@
+import { InMemoryComicsRepository } from "../../../test/repositories/in.memory.comics.repository";
 import { CharacterList } from "../entities/comics/comics.characterList";
 import { CreatorList } from "../entities/comics/comics.creatorList";
 import { SeriesSummary } from "../entities/comics/comics.seriesSummary";
@@ -8,7 +9,9 @@ import { RegisterComicsUseCase } from "./registerComics.use-case";
 
 describe('Register Comics', () => {
     it('should be able to register a comics', async () => {
-        const registerComicsUseCase = new RegisterComicsUseCase();
+
+        const inMemoryComicsRepository = new InMemoryComicsRepository();
+        const registerComicsUseCase = new RegisterComicsUseCase(inMemoryComicsRepository);
 
         const { comics } = await registerComicsUseCase.execute({
             digitalId: 1,
@@ -21,6 +24,7 @@ describe('Register Comics', () => {
             pageCount: 1,
             textObjects: [new TextObject({
                 comicId: "1234",
+                type: 'type',
                 language: 'language',
                 text: 'text'
             })] ,
@@ -51,6 +55,7 @@ describe('Register Comics', () => {
             })
         });
 
-        expect(comics).toBeTruthy();
+        expect(inMemoryComicsRepository.comics).toHaveLength(1);
+        expect(inMemoryComicsRepository.comics[0]).toEqual(comics);
     });
 });
