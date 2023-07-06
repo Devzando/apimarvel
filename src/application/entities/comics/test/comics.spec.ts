@@ -19,23 +19,23 @@ describe('comics', () => {
             issn: 'issn',
             formato: 'fomato',
             pageCount: 1,
-            textObjects: [new TextObject({
+            textObjects: new TextObject({
                 comicId: "1234",
                 type: 'type',
                 language: 'language',
                 text: 'text'
-            })],
+            }),
             resourceURI: 'resourceURI',
             series: new SeriesSummary({
                 comicId: '1234',
                 resourceURI: 'resourceURI',
                 name: 'name'
             }),
-            prices: [new ComicPrice({
+            prices: new ComicPrice({
                 comicId: '1234',
                 type: 'type',
                 price: 1.0
-            })],
+            }),
             creators: new CreatorList({
                 comicId: '1234',
                 available: 1,

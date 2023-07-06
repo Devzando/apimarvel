@@ -1,18 +1,15 @@
-
-
-import { InMemoryComicsRepository } from "../../../test/repositories/in.memory.comics.repository";
-import { CharacterList } from "../entities/comics/comics.characterList";
-import { CreatorList } from "../entities/comics/comics.creatorList";
-import { SeriesSummary } from "../entities/comics/comics.seriesSummary";
-import { StoryList } from "../entities/comics/comics.storyList";
-import { TextObject } from "../entities/comics/comics.textObject";
+import { CharacterList } from "@application/entities/comics/comics.characterList";
+import { ComicPrice } from "@application/entities/comics/comics.comicPrice";
+import { CreatorList } from "@application/entities/comics/comics.creatorList";
+import { SeriesSummary } from "@application/entities/comics/comics.seriesSummary";
+import { StoryList } from "@application/entities/comics/comics.storyList";
+import { TextObject } from "@application/entities/comics/comics.textObject";
+import { InMemoryComicsRepository } from "@test/repositories/in.memory.comics.repository";
 import { RegisterComicsUseCase } from "./registerComics.use-case";
-import { ComicPrice } from "../entities/comics/comics.comicPrice";
 
 
-describe('Register Comics', () => {
-    it('should be able to register a comics', async () => {
-
+describe('List Comics', () => {
+    it('should be able to list comics', async () => {
         const inMemoryComicsRepository = new InMemoryComicsRepository();
         const registerComicsUseCase = new RegisterComicsUseCase(inMemoryComicsRepository);
 
@@ -65,4 +62,6 @@ describe('Register Comics', () => {
         expect(inMemoryComicsRepository.comics).toHaveLength(1);
         expect(inMemoryComicsRepository.comics[0].id).toEqual(comicsResponse.id);
     });
+
+    
 });

@@ -1,15 +1,21 @@
 import { Controller, Get, Body, Post } from '@nestjs/common';
 import { CreateComicsDto } from '../dtos/comics/create.comics.dto';
-import { RegisterComicsUseCase } from 'src/application/use-cases/registerComics.use-case';
+import { RegisterComicsUseCase } from '@application/use-cases/registerComics.use-case';
+import { ListComicsUseCase } from '@application/use-cases/listComics.use-case';
+import { ListComicsDTO } from '../dtos/comics/list.comics.dto';
 
-@Controller()
+@Controller('api')
 export class ComicsController {
 
-  constructor(private registerComicsUserCase: RegisterComicsUseCase) { }
+  constructor(
+    private registerComicsUserCase: RegisterComicsUseCase,
+    private listComicsUserCase: ListComicsUseCase,
 
-  @Post('api/comics')
+    ) { }
+
+  @Post('comics')
   async create(@Body() body: CreateComicsDto) {
-    const { comicsResponse } = await this.registerComicsUserCase.execute({
+   await this.registerComicsUserCase.execute({
         digitalId: body.digitalId,
         title: body.title,
         description: body.description,
@@ -26,6 +32,13 @@ export class ComicsController {
         characters: body.characters,
         stories: body.stories
     });
+
+    return { msg: 'Comics created successfully' };
+  }
+
+  @Get('comics')
+  async list(): Promise<{ comicsResponse: ListComicsDTO[]; }> {
+    const { comicsResponse } = await this.listComicsUserCase.execute();
 
     return { comicsResponse };
   }

@@ -17,10 +17,10 @@ interface RegisterComicsRequest {
     issn: string;
     formato: string;
     pageCount: number;
-    textObjects: TextObject[];
+    textObjects: TextObject;
     resourceURI: string;
     series: SeriesSummary;
-    prices: ComicPrice[];
+    prices: ComicPrice;
     creators: CreatorList;
     characters: CharacterList;
     stories: StoryList;
@@ -37,10 +37,10 @@ interface RegisterComicsReponse {
         issn: string;
         formato: string;
         pageCount: number;
-        textObjects: TextObject[];
+        textObjects: TextObject;
         resourceURI: string;
         series: SeriesSummary;
-        prices: ComicPrice[];
+        prices: ComicPrice;
         creators: CreatorList;
         characters: CharacterList;
         stories: StoryList;

@@ -44,7 +44,7 @@ export class CreateComicsDto {
 
     @IsNotEmpty()
     @Length(3, 50)
-    textObjects: TextObject[];
+    textObjects: TextObject;
 
     @IsNotEmpty()
     @Length(3, 50)
@@ -56,7 +56,7 @@ export class CreateComicsDto {
 
     @IsNotEmpty()
     @Length(3, 50)
-    prices: ComicPrice[];
+    prices: ComicPrice;
 
     @IsNotEmpty()
     @Length(3, 50)

@@ -16,10 +16,10 @@ export interface ComicsProps {
     issn: string;
     formato: string;
     pageCount: number;
-    textObjects: TextObject[];
+    textObjects: TextObject;
     resourceURI: string;
     series: SeriesSummary;
-    prices: ComicPrice[];
+    prices: ComicPrice;
     creators: CreatorList;
     characters: CharacterList;
     stories: StoryList;
@@ -29,16 +29,12 @@ export class Comics {
     private props: ComicsProps;
     private _id: string;
 
-    constructor(props: ComicsProps) {
+    constructor(props: ComicsProps, id?: string) {
         this.props = props;
-        this._id = randomUUID();
-        this.props.textObjects?.forEach(textObject => {
-            textObject.comicId = this._id;
-        });
+        this._id = id ?? randomUUID();
+        this.props.textObjects.comicId = this._id;
         this.props.series.comicId = this._id;
-        this.props.prices.forEach(price => {
-            price.comicId = this._id;
-        });
+        this.props.prices.comicId = this._id;
         this.props.creators.comicId = this._id;
         this.props.characters.comicId = this._id;
         this.props.stories.comicId = this._id;
@@ -109,11 +105,11 @@ export class Comics {
         this.props.pageCount = value;
     }
 
-    public get textObjects(): TextObject[] {
+    public get textObjects(): TextObject {
         return this.props.textObjects;
     }
 
-    public set textObjects(value: TextObject[]) {
+    public set textObjects(value: TextObject) {
         this.props.textObjects = value;
     }
 
@@ -133,11 +129,11 @@ export class Comics {
         this.props.series = value;
     }
 
-    public get prices(): ComicPrice[] {
+    public get prices(): ComicPrice {
         return this.props.prices;
     }
 
-    public set prices(value: ComicPrice[]) {
+    public set prices(value: ComicPrice) {
         this.props.prices = value;
     }
 
