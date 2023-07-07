@@ -45,4 +45,4 @@ COPY package.json ./
  
 RUN npm prune --production
  
-CMD npm run prisma:generate && npm run start
+CMD npm run migration:generate && npm run start
