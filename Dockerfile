@@ -10,4 +10,4 @@ COPY . .
 RUN npm run build
 COPY . .
 
-CMD npm run update:schema && npm run start:prod
+CMD npm run migration:generate && npm run start:prod
