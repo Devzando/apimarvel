@@ -11,7 +11,7 @@ env:
   TAG: latest
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,19 +21,13 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
 
-  testes:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Run tests
         run: docker run $IMAGE_NAME sh -c 'npm run test'
-
   deploy:
-    needs: testes
+    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
