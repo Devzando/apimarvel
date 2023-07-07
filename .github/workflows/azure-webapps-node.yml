@@ -1,111 +1,13 @@
-name: Build, Deploy and Test
+name: Build, Testes e Deploy
 
 on:
   push:
     branches:
       - main
 
-env:
-  REGISTRY: apimarvelcontainer.azurecr.io
-  IMAGE_NAME: apimarvel
-  TAG: latest
-  DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL }}
-  SHADOW_DATABASE_URL: ${{ secrets.PRISMA_SHADOW_DATABASE_URL }}
-
 jobs:
   test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Build Docker image
-        run: docker build -t ${{ env.IMAGE_NAME }} --target=test-image .
-
-      - name: Run Tests
-        id: test-completed
-        run:  docker run ${{ env.IMAGE_NAME }} sh -c 'npm run test'
+    uses: ./test.yml
 
   build-deploy:
-    runs-on: ubuntu-latest
-    needs: test
-    if: ${{ needs.test.result == 'success' }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Build Docker image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} --target=build-deploy .
-
-      - name: Login to Azure Container Registry
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ env.REGISTRY }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-
-      - name: Push Docker image
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# name: Build, Deploy and Test
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# env:
-#   REGISTRY: apimarvelcontainer.azurecr.io
-#   IMAGE_NAME: apimarvel
-#   TAG: latest
-#   DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL }}
-#   SHADOW_DATABASE_URL: ${{ secrets.PRISMA_SHADOW_DATABASE_URL }}
-
-# jobs:
-#   build-deploy-test:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v2
-
-#       - name: Build Docker image
-#         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
-
-#       - name: Run Tests
-#         run: npm run test
-
-#       - name: Login to Azure Container Registry
-#         uses: azure/docker-login@v1
-#         with:
-#           login-server: ${{ env.REGISTRY }}
-#           username: ${{ secrets.REGISTRY_USERNAME }}
-#           password: ${{ secrets.REGISTRY_PASSWORD }}
-
-#       - name: Push Docker image
-#         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+    uses: ./build-deploy.yml

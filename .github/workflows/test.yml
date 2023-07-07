@@ -1,0 +1,20 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.IMAGE_NAME }} --target=test-image .
+
+      - name: Run Tests
+        run: docker run ${{ env.IMAGE_NAME }} sh -c 'npm run test'
