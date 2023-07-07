@@ -24,7 +24,7 @@ jobs:
         run: docker build -t ${{ env.IMAGE_NAME }} --target=test-image .
 
       - name: Run Tests
-        run: npm run test
+        run:  docker run ${{ env.IMAGE_NAME }} sh -c 'npm run test'
 
   build-deploy:
     needs: test
