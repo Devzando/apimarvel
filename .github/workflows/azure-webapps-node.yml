@@ -9,6 +9,8 @@ env:
   REGISTRY: apimarvelcontainer.azurecr.io
   IMAGE_NAME: apimarvel
   TAG: latest
+  DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL }}
+  SHADOW_DATABASE_URL: ${{ secrets.PRISMA_SHADOW_DATABASE_URL }}
 
 jobs:
   build:
