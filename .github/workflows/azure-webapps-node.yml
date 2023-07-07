@@ -13,7 +13,7 @@ env:
   SHADOW_DATABASE_URL: ${{ secrets.PRISMA_SHADOW_DATABASE_URL }}
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,11 +23,6 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
