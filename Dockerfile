@@ -6,7 +6,9 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci --only=dev
+RUN npm i --only=dev
+RUN npm i   jest
+RUN npm i   ts-node
 
 COPY . .
 
