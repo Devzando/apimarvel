@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run tests
-        run: npx jest
+        run: docker run $IMAGE_NAME sh -c 'npm run test'
 
   deploy:
     needs: testes
