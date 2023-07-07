@@ -24,14 +24,15 @@ jobs:
         run: docker build -t ${{ env.IMAGE_NAME }} --target=test-image .
 
       - name: Run Tests
+        id: test-completed
         run:  docker run ${{ env.IMAGE_NAME }} sh -c 'npm run test'
 
   build-deploy:
-    needs: test
     runs-on: ubuntu-latest
+    needs: test
+    if: ${{ needs.test.result == 'success' }}
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -47,8 +48,6 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
-
-
 
 
 
