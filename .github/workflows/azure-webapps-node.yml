@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build, Deploy and Test
 
 on:
   push:
@@ -13,7 +13,7 @@ env:
   SHADOW_DATABASE_URL: ${{ secrets.PRISMA_SHADOW_DATABASE_URL }}
 
 jobs:
-  build-and-deploy:
+  build-deploy-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +23,8 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
 
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Run Tests
+        run: npm run test
 
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
