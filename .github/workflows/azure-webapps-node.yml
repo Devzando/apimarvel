@@ -27,9 +27,11 @@ jobs:
         run: npm run test
 
   build-deploy:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
