@@ -1,5 +1,7 @@
+import { randomUUID } from "node:crypto";
+
 interface TextObjectProps {
-    comicId: string;
+    comicId?: string;
     type: string;
     language: string;
     text: string;
@@ -7,12 +9,20 @@ interface TextObjectProps {
 
 export class TextObject {
     private props: TextObjectProps;
+    private _id: string;
 
-    constructor(props: TextObjectProps) {
+    constructor(props: TextObjectProps, id?: string) {
         this.props = props;
+        this._id = id ?? randomUUID();
+
     }
 
-    public get comicId(): string {
+    public get id(): string {
+        return this._id;
+    }
+
+
+    public get comicId(): string | undefined {
         return this.props.comicId;
     }
 

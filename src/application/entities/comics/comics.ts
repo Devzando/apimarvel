@@ -16,13 +16,13 @@ export interface ComicsProps {
     issn: string;
     formato: string;
     pageCount: number;
-    textObjects: TextObject;
     resourceURI: string;
-    series: SeriesSummary;
-    prices: ComicPrice;
-    creators: CreatorList;
-    characters: CharacterList;
-    stories: StoryList;
+    textObjects: TextObject[];
+    series: SeriesSummary[];
+    prices: ComicPrice[];
+    creators: CreatorList[];
+    characters: CharacterList[];
+    stories: StoryList[];
 }
 
 export class Comics {
@@ -32,13 +32,12 @@ export class Comics {
     constructor(props: ComicsProps, id?: string) {
         this.props = props;
         this._id = id ?? randomUUID();
-        this.props.textObjects.comicId = this._id;
-        this.props.series.comicId = this._id;
-        this.props.prices.comicId = this._id;
-        this.props.creators.comicId = this._id;
-        this.props.characters.comicId = this._id;
-        this.props.stories.comicId = this._id;
-
+        this.props.textObjects.forEach(textObject => textObject.comicId = this._id);
+        this.props.series.forEach(series => series.comicId = this._id);
+        this.props.prices.forEach(price => price.comicId = this._id);
+        this.props.creators.forEach(creator => creator.comicId = this._id);
+        this.props.characters.forEach(character => character.comicId = this._id);
+        this.props.stories.forEach(story => story.comicId = this._id);
     }
 
     public get id(): string {
@@ -105,59 +104,60 @@ export class Comics {
         this.props.pageCount = value;
     }
 
-    public get textObjects(): TextObject {
-        return this.props.textObjects;
-    }
-
-    public set textObjects(value: TextObject) {
-        this.props.textObjects = value;
-    }
-
+    
     public get resourceURI(): string {
         return this.props.resourceURI;
     }
-
+    
     public set resourceURI(value: string) {
         this.props.resourceURI = value;
     }
 
-    public get series(): SeriesSummary {
+    public get textObjects(): TextObject[] {
+        return this.props.textObjects;
+    }
+
+    public set textObjects(value: TextObject[]) {
+        this.props.textObjects = value;
+    }
+
+    public get series(): SeriesSummary[] {
         return this.props.series;
     }
 
-    public set series(value: SeriesSummary) {
+    public set series(value: SeriesSummary[]) {
         this.props.series = value;
     }
 
-    public get prices(): ComicPrice {
+    public get prices(): ComicPrice[] {
         return this.props.prices;
     }
 
-    public set prices(value: ComicPrice) {
+    public set prices(value: ComicPrice[]) {
         this.props.prices = value;
     }
 
-    public get creators(): CreatorList {
+    public get creators(): CreatorList[] {
         return this.props.creators;
     }
 
-    public set creators(value: CreatorList) {
+    public set creators(value: CreatorList[]) {
         this.props.creators = value;
     }
 
-    public get characters(): CharacterList {
+    public get characters(): CharacterList[] {
         return this.props.characters;
     }
 
-    public set characters(value: CharacterList) {
+    public set characters(value: CharacterList[]) {
         this.props.characters = value;
     }
 
-    public get stories(): StoryList {
+    public get stories(): StoryList[] {
         return this.props.stories;
     }
 
-    public set stories(value: StoryList) {
+    public set stories(value: StoryList[]) {
         this.props.stories = value;
     }
 }

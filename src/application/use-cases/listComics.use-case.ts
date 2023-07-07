@@ -1,21 +1,16 @@
 import { ComicsRepository } from "../repositories/comics.repository";
-import { ListComicsDTO } from "../../infra/http/dtos/comics/list.comics.dto";
 import { Injectable } from "@nestjs/common";
-
-interface ListComicsReponse {
-    comicsResponse: ListComicsDTO[];
-}
+import { Comics } from "@application/entities/comics/comics";
 
 @Injectable()
 export class ListComicsUseCase {
-
     constructor(private comicsRepository: ComicsRepository) {}
 
-    async execute(): Promise<ListComicsReponse> {
+    async execute(): Promise<Comics[]> {
 
-        const comicsResponse  = await this.comicsRepository.list();
+        const comics = await this.comicsRepository.list();
 
-        return { comicsResponse };
+        return comics;
 
     }
 

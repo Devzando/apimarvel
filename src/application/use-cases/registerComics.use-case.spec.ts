@@ -16,7 +16,7 @@ describe('Register Comics', () => {
         const inMemoryComicsRepository = new InMemoryComicsRepository();
         const registerComicsUseCase = new RegisterComicsUseCase(inMemoryComicsRepository);
 
-        const { comicsResponse } = await registerComicsUseCase.execute({
+        const comic = await registerComicsUseCase.execute({
             digitalId: 1,
             title: 'title',
             description: 'description',
@@ -25,44 +25,38 @@ describe('Register Comics', () => {
             issn: 'issn',
             formato: 'formato',
             pageCount: 1,
-            textObjects: new TextObject({
-                comicId: "1234",
+            resourceURI: 'resourceURI',
+            textObjects: [new TextObject({
                 type: 'type',
                 language: 'language',
                 text: 'text'
-            }) ,
-            resourceURI: 'resourceURI',
-            series: new SeriesSummary({
-                comicId: "1234",
+            })] ,
+            series: [new SeriesSummary({
                 name: 'name',
                 resourceURI: 'resourceURI'
-            }),
-            prices: new ComicPrice({
-                comicId: "1234",
+            })],
+            prices: [new ComicPrice({
                 type: 'type',
                 price: 1
-            }),
-            creators: new CreatorList({
-                comicId: "1234",
+            })],
+            creators: [new CreatorList({
                 available: 1,
                 returned: 1,
                 collectionURI: 'collectionURI'
-            }),
-            characters: new CharacterList({
-                comicId: "1234",
+            })],
+            characters: [new CharacterList({
                 available: 1,
                 returned: 1,
                 collectionURI: 'collectionURI'
-            }),
-            stories: new StoryList({
-                comicId: "1234",
+            })],
+            stories: [new StoryList({
                 available: 1,
                 returned: 1,
                 collectionURI: 'collectionURI'
-            })
+            })]
         });
 
         expect(inMemoryComicsRepository.comics).toHaveLength(1);
-        expect(inMemoryComicsRepository.comics[0].id).toEqual(comicsResponse.id);
+        expect(inMemoryComicsRepository.comics[0].id).toEqual(comic.id);
     });
 });

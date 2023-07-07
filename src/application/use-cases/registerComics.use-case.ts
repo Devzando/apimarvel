@@ -17,35 +17,15 @@ interface RegisterComicsRequest {
     issn: string;
     formato: string;
     pageCount: number;
-    textObjects: TextObject;
     resourceURI: string;
-    series: SeriesSummary;
-    prices: ComicPrice;
-    creators: CreatorList;
-    characters: CharacterList;
-    stories: StoryList;
+    textObjects: TextObject[];
+    series: SeriesSummary[];
+    prices: ComicPrice[];
+    creators: CreatorList[];
+    characters: CharacterList[];
+    stories: StoryList[];
 }
 
-interface RegisterComicsReponse {
-    comicsResponse: {
-        id: string;
-        digitalId: number;
-        title: string;
-        description: string;
-        modified: Date;
-        isbn: string;
-        issn: string;
-        formato: string;
-        pageCount: number;
-        textObjects: TextObject;
-        resourceURI: string;
-        series: SeriesSummary;
-        prices: ComicPrice;
-        creators: CreatorList;
-        characters: CharacterList;
-        stories: StoryList;
-    }
-}
 
 
 @Injectable()
@@ -53,7 +33,7 @@ export class RegisterComicsUseCase {
 
     constructor(private comicsRepository: ComicsRepository) {}
 
-    async execute(request: RegisterComicsRequest): Promise<RegisterComicsReponse> {
+    async execute(request: RegisterComicsRequest): Promise<Comics> {
         const {
             digitalId,
             title,
@@ -63,8 +43,8 @@ export class RegisterComicsUseCase {
             issn,
             formato,
             pageCount,
-            textObjects,
             resourceURI,
+            textObjects,
             series,
             prices,
             creators,
@@ -72,7 +52,7 @@ export class RegisterComicsUseCase {
             stories
         } = request;
 
-        const comics = new Comics({
+        const comic = new Comics({
             digitalId,
             title,
             description,
@@ -81,38 +61,18 @@ export class RegisterComicsUseCase {
             issn,
             formato,
             pageCount,
-            textObjects,
             resourceURI,
-            series,
-            prices,
-            creators,
-            characters,
-            stories
+            textObjects: textObjects.map(textObject => new TextObject(textObject)),
+            series: series.map(seriesItem => new SeriesSummary(seriesItem)),
+            prices: prices.map(price => new ComicPrice(price)),
+            creators: creators.map(creator => new CreatorList(creator)),
+            characters: characters.map(character => new CharacterList(character)),
+            stories: stories.map(story => new StoryList(story))
         });
 
+        await this.comicsRepository.create(comic);
 
-        await this.comicsRepository.create(comics);
-
-        const comicsResponse = {
-            id: comics.id,
-            digitalId: comics.digitalId,
-            title: comics.title,
-            description: comics.description,
-            modified: comics.modified,
-            isbn: comics.isbn,
-            issn: comics.issn,
-            formato: comics.formato,
-            pageCount: comics.pageCount,
-            textObjects: comics.textObjects,
-            resourceURI: comics.resourceURI,
-            series: comics.series,
-            prices: comics.prices,
-            creators: comics.creators,
-            characters: comics.characters,
-            stories: comics.stories
-        };
-
-        return { comicsResponse };
+        return comic;
     }
 
 }

@@ -1,19 +1,18 @@
+import { InMemoryComicsRepository } from "@test/repositories/in.memory.comics.repository";
+import { FindByIdUseCase } from "./findById.use-case";
+import { RegisterComicsUseCase } from "./registerComics.use-case";
 import { CharacterList } from "@application/entities/comics/comics.characterList";
 import { ComicPrice } from "@application/entities/comics/comics.comicPrice";
 import { CreatorList } from "@application/entities/comics/comics.creatorList";
 import { SeriesSummary } from "@application/entities/comics/comics.seriesSummary";
 import { StoryList } from "@application/entities/comics/comics.storyList";
 import { TextObject } from "@application/entities/comics/comics.textObject";
-import { InMemoryComicsRepository } from "@test/repositories/in.memory.comics.repository";
-import { RegisterComicsUseCase } from "./registerComics.use-case";
-import { ListComicsUseCase } from "./listComics.use-case";
 
-
-describe('List Comics', () => {
-    it('should be able to list comics', async () => {
+describe('Find By Id Comics', () => {
+    it('should be able to find comics by id', async () => {
         const inMemoryComicsRepository = new InMemoryComicsRepository();
+        const findByIdUseCase = new FindByIdUseCase(inMemoryComicsRepository);
         const registerComicsUseCase = new RegisterComicsUseCase(inMemoryComicsRepository);
-        const listComicsUseCase = new ListComicsUseCase(inMemoryComicsRepository);
 
         const comic = await registerComicsUseCase.execute({
             digitalId: 1,
@@ -29,7 +28,7 @@ describe('List Comics', () => {
                 type: 'type',
                 language: 'language',
                 text: 'text'
-            })] ,
+            })],
             series: [new SeriesSummary({
                 name: 'name',
                 resourceURI: 'resourceURI'
@@ -55,11 +54,9 @@ describe('List Comics', () => {
             })]
         });
 
-        const comics = await listComicsUseCase.execute();
+        const comicById = await findByIdUseCase.execute(comic.id);
 
-        expect(inMemoryComicsRepository.comics).toHaveLength(1);
-        expect(inMemoryComicsRepository.comics[0]).toEqual(comic);
+        expect(comicById?.id).toEqual(comic.id);
     });
 
-    
 });

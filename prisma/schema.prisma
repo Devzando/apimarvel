@@ -31,8 +31,8 @@ model Comic {
 }
 
 model TextObject {
-  id       Int    @id @default(autoincrement())
-  comic    Comic  @relation(fields: [comicId], references: [id])
+  id       String @id
+  comic    Comic  @relation(fields: [comicId], references: [id], onDelete: Cascade)
   comicId  String
   type     String
   language String
@@ -40,8 +40,8 @@ model TextObject {
 }
 
 model StoryList {
-  id            Int    @id @default(autoincrement())
-  comic         Comic  @relation(fields: [comicId], references: [id])
+  id            String @id
+  comic         Comic  @relation(fields: [comicId], references: [id], onDelete: Cascade)
   comicId       String
   available     Int
   returned      Int
@@ -49,16 +49,16 @@ model StoryList {
 }
 
 model SeriesSummary {
-  id          Int    @id @default(autoincrement())
-  comic       Comic  @relation(fields: [comicId], references: [id])
+  id          String @id
+  comic       Comic  @relation(fields: [comicId], references: [id], onDelete: Cascade)
   comicId     String
   resourceURI String
   name        String
 }
 
 model CreatorList {
-  id            Int    @id @default(autoincrement())
-  comic         Comic  @relation(fields: [comicId], references: [id])
+  id            String @id
+  comic         Comic  @relation(fields: [comicId], references: [id], onDelete: Cascade)
   comicId       String
   available     Int
   returned      Int
@@ -66,16 +66,16 @@ model CreatorList {
 }
 
 model ComicPrice {
-  id      Int    @id @default(autoincrement())
-  comic   Comic  @relation(fields: [comicId], references: [id])
+  id      String @id
+  comic   Comic  @relation(fields: [comicId], references: [id], onDelete: Cascade)
   comicId String
   type    String
   price   Float
 }
 
 model CharacterList {
-  id            Int    @id @default(autoincrement())
-  comic         Comic  @relation(fields: [comicId], references: [id])
+  id            String @id
+  comic         Comic  @relation(fields: [comicId], references: [id], onDelete: Cascade)
   comicId       String
   available     Int
   returned      Int

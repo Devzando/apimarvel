@@ -1,5 +1,7 @@
+import { randomUUID } from "node:crypto";
+
 export interface StoryListProps {
-    comicId: string;
+    comicId?: string;
     available: number;
     returned: number;
     collectionURI: string;
@@ -7,12 +9,18 @@ export interface StoryListProps {
 
 export class StoryList {
     private props: StoryListProps;
+    private _id: string;
 
-    constructor(props: StoryListProps) {
+    constructor(props: StoryListProps, id?: string) {
         this.props = props;
+        this._id = id ?? randomUUID();
     }
 
-    public get comicId(): string  {
+    public get id(): string  {
+        return this._id;
+    }
+
+    public get comicId(): string | undefined  {
         return this.props.comicId;
     }
 

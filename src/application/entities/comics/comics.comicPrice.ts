@@ -1,17 +1,25 @@
+import { randomUUID } from "node:crypto";
+
 export interface ComicPriceProps {
-    comicId: string;
+    comicId?: string;
     type: string;
     price: number;
 }
 
 export class ComicPrice {
     private props: ComicPriceProps;
+    private _id: string;
 
-    constructor(props: ComicPriceProps) {
+    constructor(props: ComicPriceProps, id?: string) {
         this.props = props;
+        this._id = id ?? randomUUID();
     }
 
-    public get comicId(): string {
+    public get id(): string {
+        return this._id;
+    }
+
+    public get comicId(): string | undefined {
         return this.props.comicId;
     }
 

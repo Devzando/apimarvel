@@ -8,7 +8,7 @@ import { StoryList } from 'src/application/entities/comics/comics.storyList';
 import { TextObject } from 'src/application/entities/comics/comics.textObject';
 
 
-export class CreateComicsDto {
+export class UpdateComicsDto {
     @ApiProperty()
     @IsNotEmpty()
     digitalId: number;

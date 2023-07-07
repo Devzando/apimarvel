@@ -1,17 +1,25 @@
+import { randomUUID } from "node:crypto";
+
 export interface SeriesSummaryProps {
-    comicId: string;
+    comicId?: string;
     resourceURI: string;
     name: string;
 }
 
 export class SeriesSummary {
     private props: SeriesSummaryProps;
+    private _id: string;
 
-    constructor(props: SeriesSummaryProps) {
+    constructor(props: SeriesSummaryProps, id?: string) {
         this.props = props;
+        this._id = id ?? randomUUID();
     }
 
-    public get comicId(): string {
+    public get id(): string {
+        return this._id;
+    }
+
+    public get comicId(): string | undefined {
         return this.props.comicId;
     }
 
