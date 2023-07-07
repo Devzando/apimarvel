@@ -2,7 +2,7 @@
  
 FROM node:18-alpine AS install-dependencies
  
-WORKDIR /user/src/app
+WORKDIR /app
  
 COPY package.json package-lock.json ./
  
@@ -18,9 +18,9 @@ COPY . .
  
 FROM node:18-alpine AS create-build
  
-WORKDIR /user/src/app
+WORKDIR /app
  
-COPY --from=install-dependencies /user/src/app ./
+COPY --from=install-dependencies ./ ./
 
 ARG PRISMA_DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
@@ -37,10 +37,10 @@ USER node
  
 FROM node:18-alpine AS run
  
-WORKDIR /user/src/app
+WORKDIR ./
  
-COPY --from=install-dependencies /user/src/app/node_modules ./node_modules
-COPY --from=create-build /user/src/app/dist ./dist
+COPY --from=install-dependencies ./node_modules ./node_modules
+COPY --from=create-build ./dist ./dist
 COPY package.json ./
  
 RUN npm prune --production
