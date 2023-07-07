@@ -466,3 +466,94 @@ Bom, agora se mandarmos uma requisão http para o endpoint **http://localhost:30
     ```
     
 - Agora você pode desfrutar da aplicação a vontade.
+
+## Deploy da aplicação:
+
+Para o deploy, Criamos um arquivo Dockerfile para nos ajudar na construção da imagem do projeto:
+
+```jsx
+FROM node:18
+ 
+WORKDIR /app
+ 
+COPY package.json package-lock.json ./
+ 
+RUN npm ci
+
+RUN npm i jest
+RUN npm i ts-node
+ 
+COPY . .
+ 
+ARG PRISMA_DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+ENV SHADOW_DATABASE_URL=${SHADOW_DATABASE_URL}
+ 
+RUN npx prisma generate
+
+RUN npm run build
+
+COPY . .
+
+CMD npm run migration:generate && npm run start
+```
+
+Em seguida, temos a criação do arquivo .yml para nos ajudar com a atumotização do push da imagem para um registry (Usei o Registry Container da azure).
+
+```jsx
+name: Build, Deploy and Test
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: apimarvelcontainer.azurecr.io
+  IMAGE_NAME: apimarvel
+  TAG: latest
+  DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL }}
+  SHADOW_DATABASE_URL: ${{ secrets.PRISMA_SHADOW_DATABASE_URL }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.IMAGE_NAME }} .
+
+      - name: Run Tests
+        run:  docker run ${{ env.IMAGE_NAME }} sh -c 'npm run test'
+
+  build-deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
+
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.REGISTRY }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Push Docker image
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+
+```
+
+É importante entender que direto fazemos uso das variáveis de ambiente, nesse caso, usamos os Secrets do github. Por fim, se fez uso de um web app service, que vai ficar se comunicando com registry e verificando caso exista alguma nova versão da imagem. Quando tiver, ele vai subir um contêiner baseando nessa nova versão da imagem do registry. O serviço web app também é da Azure.
+
+Bom, é isso: Aqui uma imagem de como fica a pipiline no processo de deploy dessa aplicação. Perceba que o deploy da aplicação só inicia quando todos os testes são executados com sucesso.
+
+![Untitled](./Untitled1.png)
