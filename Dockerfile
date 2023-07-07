@@ -45,4 +45,4 @@ COPY package.json ./
  
 RUN npm prune --production
  
-CMD ["npm", "run", "start:prod"]
+CMD npm run update:schema && npm run start
