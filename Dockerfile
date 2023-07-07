@@ -11,8 +11,6 @@ COPY prisma/ ./
 
 RUN npx prisma generate
 
-RUN npm install --global jest   # Adiciona esta linha para instalar o Jest globalmente
-
 RUN npm run build
 COPY . .
 
