@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  REGISTRY: fipro.azurecr.io
-  IMAGE_NAME: fipro-api
+  REGISTRY: apimarvelcontainer.azurecr.io
+  IMAGE_NAME: apimarvel
   TAG: latest
 
 jobs:
